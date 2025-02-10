@@ -14,7 +14,7 @@ function App() {
       {/* NAVBAR */}
       <nav className="flex items-center justify-between px-6 py-3 bg-black shadow-md sticky top-0 z-50">
         <a
-          href="/"
+          href="#"
           className="text-2xl font-bold text-gray-300 hover:underline"
         >
           Linkou 3D Point Cloud
@@ -63,7 +63,7 @@ function App() {
         </aside>
 
         {/* Canvas */}
-        <main className="flex-1 relative h-screen">
+        <main className="flex-1 relative">
           <Canvas
             className="absolute top-0 left-0 w-full h-full"
             camera={{ position: [0, 0, 20], fov: 60 }}
