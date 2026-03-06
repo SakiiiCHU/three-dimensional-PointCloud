@@ -20,6 +20,8 @@ export default function App() {
   const [part1Points, setPart1Points] = useState(0);
   const [part2Points, setPart2Points] = useState(0);
 
+  const [showMobileDetails, setShowMobileDetails] = useState(false);
+
   const viewModeLabel = useMemo(() => {
     if (viewMode === "part1") return "PART 1";
     if (viewMode === "part2") return "PART 2";
@@ -73,7 +75,7 @@ export default function App() {
       {/* MAIN: mobile = column, desktop = row */}
       <div className="flex-1 flex flex-col md:flex-row min-h-0">
         {/* PANEL */}
-        <aside className="w-full md:w-72 bg-black border-b md:border-b-0 md:border-r border-gray-800 p-4 md:p-5">
+        <aside className="w-full md:w-72 bg-black border-b md:border-b-0 md:border-r border-gray-800 p-3 md:p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <h2 className="text-base md:text-lg font-semibold mb-1">
@@ -85,28 +87,41 @@ export default function App() {
                 City, reconstructed from UAV aerial imagery.
               </p>
 
-              <ul className="mt-3 space-y-1 text-sm text-gray-500 list-disc pl-5">
-                <li>Photogrammetric reconstruction (~6.9M points)</li>
-                <li>Original dataset in PLY format (~90 MB per segment)</li>
-                <li>
-                  Converted to compressed BIN (.bin.gz) format for efficient web
-                  visualization
-                </li>
-                <li>Interactive WebGL viewer</li>
-              </ul>
+              {/* 手機版：收合詳細資訊 */}
+              <button
+                onClick={() => setShowMobileDetails((v) => !v)}
+                className="mt-2 md:hidden text-xs text-gray-400 underline underline-offset-4"
+              >
+                {showMobileDetails ? "Hide details" : "Show details"}
+              </button>
+
+              {/* 桌機永遠顯示；手機可收合 */}
+              <div
+                className={`${showMobileDetails ? "block" : "hidden"} md:block`}
+              >
+                <ul className="mt-3 space-y-1 text-sm text-gray-500 list-disc pl-5">
+                  <li>Photogrammetric reconstruction (~6.9M points)</li>
+                  <li>Original dataset in PLY format (~90 MB per segment)</li>
+                  <li>
+                    Converted to compressed BIN (.bin.gz) format for efficient
+                    web visualization
+                  </li>
+                  <li>Interactive WebGL viewer</li>
+                </ul>
+              </div>
             </div>
 
             {/* mobile quick buttons */}
             <div className="flex md:hidden gap-2 shrink-0">
               <button
                 onClick={() => setShowGuide(true)}
-                className="h-10 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-sm"
+                className="h-9 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-sm"
               >
                 ?
               </button>
               <button
                 onClick={handleResetView}
-                className="h-10 px-3 rounded-lg bg-gradient-to-r from-orange-400 to-pink-500 text-sm font-semibold"
+                className="h-9 px-3 rounded-lg bg-gradient-to-r from-orange-400 to-pink-500 text-sm font-semibold"
               >
                 Reset
               </button>
