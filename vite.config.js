@@ -1,15 +1,17 @@
-// import { defineConfig } from 'vite'
-// import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// // https://vitejs.dev/config/
-// export default defineConfig({
-//   plugins: [react()],
-//   base: '/three-dimensional-PointCloud/', // Replace with your repository name
-// })
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-
-export default defineConfig(({ mode }) => ({
+// https://vitejs.dev/config/
+export default defineConfig({
   plugins: [react()],
-  base: mode === "production" ? "/three-dimensional-PointCloud/" : "/",
-}));
+  base: '/three-dimensional-PointCloud/', // Replace with your repository name
+})
+
+
+// import { defineConfig } from "vite";
+// import react from "@vitejs/plugin-react";
+
+// export default defineConfig(({ mode }) => ({
+//   plugins: [react()],
+//   base: mode === "production" ? "/three-dimensional-PointCloud/" : "/",
+// }));
