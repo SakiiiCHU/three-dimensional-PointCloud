@@ -64,14 +64,19 @@ async function loadMaybeCompressedBin(url) {
     bytes[0]?.toString(16),
     bytes[1]?.toString(16),
     "isGzip:",
-    isGzip
+    isGzip,
   );
 
   let rawBuffer;
 
   if (isGzip) {
     const decompressed = pako.ungzip(bytes);
-    console.log("[BINGZ] ungzipped bytes:", decompressed.byteLength, "url:", url);
+    console.log(
+      "[BINGZ] ungzipped bytes:",
+      decompressed.byteLength,
+      "url:",
+      url,
+    );
     rawBuffer = decompressed.buffer;
   } else {
     // Vite dev may already serve decompressed content
@@ -90,7 +95,10 @@ async function loadMaybeCompressedBin(url) {
  */
 function transformLikeOld(positions, colors) {
   const tempGeometry = new THREE.BufferGeometry();
-  tempGeometry.setAttribute("position", new THREE.BufferAttribute(positions.slice(), 3));
+  tempGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(positions.slice(), 3),
+  );
 
   tempGeometry.computeBoundingBox();
   const box = tempGeometry.boundingBox;
@@ -141,6 +149,7 @@ export function CenteredModelBINGZ({
   previewUrl,
   url,
   enabled = true,
+  onPreviewLoaded,
   onFullLoaded,
   pointSize = 0.008,
 }) {
@@ -193,6 +202,8 @@ export function CenteredModelBINGZ({
           console.log("[BINGZ] preview points:", preview.numPoints);
           const g0 = buildGeometry(preview.positions, preview.colors);
           setGeometry(g0);
+
+          onPreviewLoaded?.(preview.numPoints);
         }
 
         if (url) {
@@ -206,7 +217,7 @@ export function CenteredModelBINGZ({
 
           if (!hasLoadedFullRef.current) {
             hasLoadedFullRef.current = true;
-            onFullLoadedRef.current?.();
+            onFullLoadedRef.current?.(full.numPoints);
           }
         }
       } catch (e) {
@@ -223,5 +234,12 @@ export function CenteredModelBINGZ({
 
   if (!geometry) return null;
 
-  return <points ref={pointsRef} geometry={geometry} material={material} frustumCulled={false} />;
+  return (
+    <points
+      ref={pointsRef}
+      geometry={geometry}
+      material={material}
+      frustumCulled={false}
+    />
+  );
 }

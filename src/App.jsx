@@ -17,6 +17,9 @@ export default function App() {
   // loading overlay for canvas
   const [isLoading, setIsLoading] = useState(true);
 
+  const [part1Points, setPart1Points] = useState(0);
+  const [part2Points, setPart2Points] = useState(0);
+
   const viewModeLabel = useMemo(() => {
     if (viewMode === "part1") return "PART 1";
     if (viewMode === "part2") return "PART 2";
@@ -28,6 +31,22 @@ export default function App() {
       m === "part1" ? "both" : m === "both" ? "part2" : "part1",
     );
   };
+
+  // 新增點雲數量統計
+  const loadedPointLabel = useMemo(() => {
+    let count = 0;
+
+    if (viewMode === "part1") {
+      count = part1Points;
+    } else if (viewMode === "part2") {
+      count = part2Points;
+    } else {
+      count = part1Points + part2Points;
+    }
+
+    if (count === 0) return "Loading...";
+    return `${count.toLocaleString("en-US")} points`;
+  }, [viewMode, part1Points, part2Points]);
 
   const handleResetView = () => controlsRef.current?.reset();
 
@@ -103,6 +122,13 @@ export default function App() {
               View Mode: {viewModeLabel}
             </button>
 
+            <div className="col-span-2 md:col-span-1 text-xs text-gray-400">
+              Loaded:{" "}
+              <span className="text-gray-200 font-medium">
+                {loadedPointLabel}
+              </span>
+            </div>
+
             {/* desktop controls */}
             <div className="hidden md:block border-t border-gray-800 pt-4 space-y-3">
               <h2 className="text-lg font-semibold mb-2">Controls</h2>
@@ -145,7 +171,11 @@ export default function App() {
                     previewUrl={`${BASE}linkou_1_preview.bin.gz`}
                     url={`${BASE}linkou_1.bin.gz`}
                     enabled={true}
-                    onFullLoaded={() => {
+                    onPreviewLoaded={(count) => {
+                      setPart1Points(count);
+                    }}
+                    onFullLoaded={(count) => {
+                      setPart1Points(count);
                       setPart2Enabled(true);
                       setIsLoading(false);
                     }}
@@ -158,6 +188,12 @@ export default function App() {
                     previewUrl={`${BASE}linkou_2_preview.bin.gz`}
                     url={`${BASE}linkou_2.bin.gz`}
                     enabled={part2Enabled}
+                    onPreviewLoaded={(count) => {
+                      setPart2Points(count);
+                    }}
+                    onFullLoaded={(count) => {
+                      setPart2Points(count);
+                    }}
                     pointSize={0.008}
                   />
                 )}
@@ -245,8 +281,9 @@ export default function App() {
         </p>
 
         <p className="small weight-300 text-gray-500">
-          ©2026 Ting-Chen Chu. This project is for educational and demonstration
-          purposes only, non-commercial use.
+          ©2026 Ting-Chen Chu. Educational & demonstration use only
+          (non-commercial). Point cloud datasets © author — permission required
+          for use.
         </p>
       </footer>
     </div>
