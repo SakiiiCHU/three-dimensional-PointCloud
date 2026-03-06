@@ -14,6 +14,9 @@ export default function App() {
   const [showGuide, setShowGuide] = useState(false);
   const [part2Enabled, setPart2Enabled] = useState(false);
 
+  // loading overlay for canvas
+  const [isLoading, setIsLoading] = useState(true);
+
   const viewModeLabel = useMemo(() => {
     if (viewMode === "part1") return "PART 1";
     if (viewMode === "part2") return "PART 2";
@@ -57,14 +60,21 @@ export default function App() {
               <h2 className="text-base md:text-lg font-semibold mb-1">
                 Viewer
               </h2>
-              <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
-                LiDAR point cloud of Linkou District, New Taipei City.
-                <br />
-                <span className="text-gray-500">Drag • Zoom • Pan freely.</span>
+
+              <p className="text-sm text-gray-400 leading-relaxed">
+                High-resolution 3D point cloud of Linkou District, New Taipei
+                City, reconstructed from UAV aerial imagery.
               </p>
-              <div className="mt-2 text-[11px] text-gray-600 break-all">
-                BASE_URL: {BASE}
-              </div>
+
+              <ul className="mt-3 space-y-1 text-sm text-gray-500 list-disc pl-5">
+                <li>Photogrammetric reconstruction (~6.9M points)</li>
+                <li>Original dataset in PLY format (~90 MB per segment)</li>
+                <li>
+                  Converted to compressed BIN (.bin.gz) format for efficient web
+                  visualization
+                </li>
+                <li>Interactive WebGL viewer</li>
+              </ul>
             </div>
 
             {/* mobile quick buttons */}
@@ -93,12 +103,6 @@ export default function App() {
               View Mode: {viewModeLabel}
             </button>
 
-            <div className="col-span-2 md:col-span-1 text-xs text-gray-500">
-              {part2Enabled
-                ? "Part 2 is ready to load."
-                : "Loading Part 1 first..."}
-            </div>
-
             {/* desktop controls */}
             <div className="hidden md:block border-t border-gray-800 pt-4 space-y-3">
               <h2 className="text-lg font-semibold mb-2">Controls</h2>
@@ -122,7 +126,6 @@ export default function App() {
 
         {/* CANVAS */}
         <main className="relative flex-1 min-h-0">
-          {/*  very important: give canvas container a real height on mobile */}
           <div className="absolute inset-0">
             <Canvas
               className="w-full h-full"
@@ -142,7 +145,10 @@ export default function App() {
                     previewUrl={`${BASE}linkou_1_preview.bin.gz`}
                     url={`${BASE}linkou_1.bin.gz`}
                     enabled={true}
-                    onFullLoaded={() => setPart2Enabled(true)}
+                    onFullLoaded={() => {
+                      setPart2Enabled(true);
+                      setIsLoading(false);
+                    }}
                     pointSize={0.008}
                   />
                 )}
@@ -167,6 +173,18 @@ export default function App() {
               />
             </Canvas>
           </div>
+
+          {/* LOADING OVERLAY */}
+          {isLoading && (
+            <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+              <div className="px-5 py-3 rounded-2xl bg-black/45 backdrop-blur-md border border-white/10 shadow-lg">
+                <div className="flex items-center gap-3 text-sm text-gray-200">
+                  <div className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  <span>Loading point cloud...</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* GUIDE OVERLAY */}
           {showGuide && (
@@ -212,7 +230,7 @@ export default function App() {
         </main>
       </div>
 
-      {/* footer: make it small so it doesn't steal mobile height */}
+      {/* footer */}
       <footer className="footer bg-dark text-light py-3 text-center footer-text">
         <p className="small weight-300 text-gray-500">
           📧 Email: <a href="mailto:sakiiichu@gmail.com">sakiiichu@gmail.com</a>{" "}
