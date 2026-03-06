@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import "./index.css";
+import "./App.css";
 import { CenteredModelBINGZ } from "./components/CenteredModelBINGZ";
 
 export default function App() {
@@ -20,7 +21,9 @@ export default function App() {
   }, [viewMode]);
 
   const toggleMode = () => {
-    setViewMode((m) => (m === "part1" ? "both" : m === "both" ? "part2" : "part1"));
+    setViewMode((m) =>
+      m === "part1" ? "both" : m === "both" ? "part2" : "part1",
+    );
   };
 
   const handleResetView = () => controlsRef.current?.reset();
@@ -29,7 +32,10 @@ export default function App() {
     <div className="min-h-[100dvh] bg-black text-white flex flex-col">
       {/* NAV */}
       <nav className="flex items-center justify-between px-4 sm:px-6 py-3 bg-black shadow-md sticky top-0 z-50">
-        <a href="#" className="text-lg sm:text-2xl font-bold text-gray-300 hover:underline">
+        <a
+          href="#"
+          className="text-lg sm:text-2xl font-bold text-gray-300 hover:underline"
+        >
           Linkou 3D Point Cloud
         </a>
         <a
@@ -48,7 +54,9 @@ export default function App() {
         <aside className="w-full md:w-72 bg-black border-b md:border-b-0 md:border-r border-gray-800 p-4 md:p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h2 className="text-base md:text-lg font-semibold mb-1">Viewer</h2>
+              <h2 className="text-base md:text-lg font-semibold mb-1">
+                Viewer
+              </h2>
               <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
                 LiDAR point cloud of Linkou District, New Taipei City.
                 <br />
@@ -86,7 +94,9 @@ export default function App() {
             </button>
 
             <div className="col-span-2 md:col-span-1 text-xs text-gray-500">
-              {part2Enabled ? "Part 2 is ready to load." : "Loading Part 1 first..."}
+              {part2Enabled
+                ? "Part 2 is ready to load."
+                : "Loading Part 1 first..."}
             </div>
 
             {/* desktop controls */}
@@ -164,7 +174,10 @@ export default function App() {
               <div className="bg-zinc-900 border border-white/10 rounded-2xl p-5 max-w-md w-full">
                 <div className="flex justify-between items-center mb-3">
                   <h2 className="text-lg font-semibold">Quick Controls</h2>
-                  <button onClick={() => setShowGuide(false)} className="text-gray-400 hover:text-white">
+                  <button
+                    onClick={() => setShowGuide(false)}
+                    className="text-gray-400 hover:text-white"
+                  >
                     ✕
                   </button>
                 </div>
@@ -200,9 +213,9 @@ export default function App() {
       </div>
 
       {/* footer: make it small so it doesn't steal mobile height */}
-      <footer className="footer bg-dark text-light py-3 text-center">
+      <footer className="footer bg-dark text-light py-3 text-center footer-text">
         <p className="small weight-300 text-gray-500">
-          📧 Email: <a href="mailto:sakiiichu@gmail.com">sakiichu@gmail.com</a>{" "}
+          📧 Email: <a href="mailto:sakiiichu@gmail.com">sakiiichu@gmail.com</a>{" "}
           | 🔗 GitHub:{" "}
           <a
             href="https://github.com/SakiiiCHU"
@@ -212,6 +225,7 @@ export default function App() {
             SakiiiCHU
           </a>
         </p>
+
         <p className="small weight-300 text-gray-500">
           ©2026 Ting-Chen Chu. This project is for educational and demonstration
           purposes only, non-commercial use.

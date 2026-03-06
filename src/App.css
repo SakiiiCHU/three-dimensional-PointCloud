@@ -40,3 +40,23 @@
 .read-the-docs {
   color: #888;
 } */
+
+.footer-text p {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .footer-text p {
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 768px) {
+  .footer-text p {
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+
+  .footer-text a {
+    word-break: break-word;
+  }
+}
