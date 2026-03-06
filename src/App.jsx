@@ -20,25 +20,18 @@ export default function App() {
   }, [viewMode]);
 
   const toggleMode = () => {
-    setViewMode((m) =>
-      m === "part1" ? "both" : m === "both" ? "part2" : "part1",
-    );
+    setViewMode((m) => (m === "part1" ? "both" : m === "both" ? "part2" : "part1"));
   };
 
-  const handleResetView = () => {
-    controlsRef.current?.reset();
-  };
+  const handleResetView = () => controlsRef.current?.reset();
 
   return (
-    <div className="bg-black min-h-screen flex flex-col text-white">
-      <nav className="flex items-center justify-between px-6 py-3 bg-black shadow-md sticky top-0 z-50">
-        <a
-          href="#"
-          className="text-2xl font-bold text-gray-300 hover:underline"
-        >
+    <div className="min-h-[100dvh] bg-black text-white flex flex-col">
+      {/* NAV */}
+      <nav className="flex items-center justify-between px-4 sm:px-6 py-3 bg-black shadow-md sticky top-0 z-50">
+        <a href="#" className="text-lg sm:text-2xl font-bold text-gray-300 hover:underline">
           Linkou 3D Point Cloud
         </a>
-
         <a
           href="https://github.com/SakiiiCHU/three-dimensional-PointCloud"
           target="_blank"
@@ -49,137 +42,150 @@ export default function App() {
         </a>
       </nav>
 
-      <div className="flex flex-1">
-        <aside className="w-72 p-5 bg-black border-r border-gray-800">
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Viewer</h2>
+      {/* MAIN: mobile = column, desktop = row */}
+      <div className="flex-1 flex flex-col md:flex-row min-h-0">
+        {/* PANEL */}
+        <aside className="w-full md:w-72 bg-black border-b md:border-b-0 md:border-r border-gray-800 p-4 md:p-5">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h2 className="text-base md:text-lg font-semibold mb-1">Viewer</h2>
+              <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
+                LiDAR point cloud of Linkou District, New Taipei City.
+                <br />
+                <span className="text-gray-500">Drag • Zoom • Pan freely.</span>
+              </p>
+              <div className="mt-2 text-[11px] text-gray-600 break-all">
+                BASE_URL: {BASE}
+              </div>
+            </div>
 
-            <p className="text-sm text-gray-400 leading-relaxed">
-              LiDAR point cloud of Linkou District, New Taipei City.
-              <br />
-              <span className="text-gray-500">Drag • Zoom • Pan freely.</span>
-              <br />
-              <span className="text-gray-500">
-                Tip: if you get lost, press{" "}
-                <b className="text-gray-200">Reset View</b>.
-              </span>
-            </p>
+            {/* mobile quick buttons */}
+            <div className="flex md:hidden gap-2 shrink-0">
+              <button
+                onClick={() => setShowGuide(true)}
+                className="h-10 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-sm"
+              >
+                ?
+              </button>
+              <button
+                onClick={handleResetView}
+                className="h-10 px-3 rounded-lg bg-gradient-to-r from-orange-400 to-pink-500 text-sm font-semibold"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
 
+          {/* buttons grid */}
+          <div className="mt-3 grid grid-cols-2 md:grid-cols-1 gap-3">
             <button
               onClick={toggleMode}
-              className="mt-4 w-full h-12 rounded-xl flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium transition"
+              className="col-span-2 md:col-span-1 h-11 md:h-12 rounded-xl flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium transition"
             >
               View Mode: {viewModeLabel}
             </button>
 
-            <div className="mt-2 text-xs text-gray-500">
-              {part2Enabled
-                ? "Part 2 is ready to load."
-                : "Loading Part 1 first..."}
+            <div className="col-span-2 md:col-span-1 text-xs text-gray-500">
+              {part2Enabled ? "Part 2 is ready to load." : "Loading Part 1 first..."}
             </div>
 
-            {/* <div className="mt-2 text-[11px] text-gray-600 break-all">
-              BASE_URL: {BASE}
-            </div> */}
-          </div>
+            {/* desktop controls */}
+            <div className="hidden md:block border-t border-gray-800 pt-4 space-y-3">
+              <h2 className="text-lg font-semibold mb-2">Controls</h2>
 
-          <div className="mt-6 border-t border-gray-800 pt-5 space-y-3">
-            <h2 className="text-lg font-semibold mb-2">Controls</h2>
+              <button
+                onClick={() => setShowGuide(true)}
+                className="w-full h-14 rounded-xl flex items-center justify-center gap-3 bg-white/10 hover:bg-white/15 border border-white/10 text-white/90 font-medium transition"
+              >
+                <span>How to Use</span>
+              </button>
 
-            <button
-              onClick={() => setShowGuide(true)}
-              className="w-full h-14 rounded-xl flex items-center justify-center gap-3 bg-white/10 hover:bg-white/15 border border-white/10 text-white/90 font-medium transition"
-            >
-              <span>How to Use</span>
-            </button>
-
-            <button
-              onClick={handleResetView}
-              className="w-full h-14 rounded-xl flex items-center justify-center gap-3 bg-gradient-to-r from-orange-400 to-pink-500 text-white font-semibold shadow-lg shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.99] transition-transform"
-            >
-              <span>Reset View</span>
-            </button>
+              <button
+                onClick={handleResetView}
+                className="w-full h-14 rounded-xl flex items-center justify-center gap-3 bg-gradient-to-r from-orange-400 to-pink-500 text-white font-semibold shadow-lg shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.99] transition-transform"
+              >
+                <span>Reset View</span>
+              </button>
+            </div>
           </div>
         </aside>
 
-        <main className="flex-1 relative">
-          <Canvas
-            className="absolute inset-0"
-            camera={{ position: [10, 12, 1], fov: 40 }}
-            gl={{
-              antialias: true,
-              alpha: false,
-              toneMapping: THREE.NoToneMapping, // avoid extra "wash"
-              outputColorSpace: THREE.SRGBColorSpace, // explicit
-            }}
-          >
-            <color attach="background" args={["#111111"]} />
+        {/* CANVAS */}
+        <main className="relative flex-1 min-h-0">
+          {/*  very important: give canvas container a real height on mobile */}
+          <div className="absolute inset-0">
+            <Canvas
+              className="w-full h-full"
+              camera={{ position: [10, 12, 1], fov: 40 }}
+              gl={{
+                antialias: true,
+                alpha: false,
+                toneMapping: THREE.NoToneMapping,
+                outputColorSpace: THREE.SRGBColorSpace,
+              }}
+            >
+              <color attach="background" args={["#111111"]} />
 
-            <Suspense fallback={null}>
-              {(viewMode === "part1" || viewMode === "both") && (
-                <CenteredModelBINGZ
-                  previewUrl={`${BASE}linkou_1_preview.bin.gz`}
-                  url={`${BASE}linkou_1.bin.gz`}
-                  enabled={true}
-                  onFullLoaded={() => setPart2Enabled(true)}
-                  pointSize={0.008}
-                />
-              )}
+              <Suspense fallback={null}>
+                {(viewMode === "part1" || viewMode === "both") && (
+                  <CenteredModelBINGZ
+                    previewUrl={`${BASE}linkou_1_preview.bin.gz`}
+                    url={`${BASE}linkou_1.bin.gz`}
+                    enabled={true}
+                    onFullLoaded={() => setPart2Enabled(true)}
+                    pointSize={0.008}
+                  />
+                )}
 
-              {(viewMode === "part2" || viewMode === "both") && (
-                <CenteredModelBINGZ
-                  previewUrl={`${BASE}linkou_2_preview.bin.gz`}
-                  url={`${BASE}linkou_2.bin.gz`}
-                  enabled={part2Enabled}
-                  pointSize={0.008}
-                />
-              )}
-            </Suspense>
+                {(viewMode === "part2" || viewMode === "both") && (
+                  <CenteredModelBINGZ
+                    previewUrl={`${BASE}linkou_2_preview.bin.gz`}
+                    url={`${BASE}linkou_2.bin.gz`}
+                    enabled={part2Enabled}
+                    pointSize={0.008}
+                  />
+                )}
+              </Suspense>
 
-            <OrbitControls
-              ref={controlsRef}
-              enablePan
-              enableZoom
-              enableRotate
-              enableDamping
-              dampingFactor={0.08}
-            />
-          </Canvas>
+              <OrbitControls
+                ref={controlsRef}
+                enablePan
+                enableZoom
+                enableRotate
+                enableDamping
+                dampingFactor={0.08}
+              />
+            </Canvas>
+          </div>
 
+          {/* GUIDE OVERLAY */}
           {showGuide && (
-            <div className="absolute inset-0 z-50 bg-black/70 backdrop-blur flex items-center justify-center p-6">
-              <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 max-w-md w-full">
-                <div className="flex justify-between items-center mb-4">
+            <div className="absolute inset-0 z-50 bg-black/70 backdrop-blur flex items-center justify-center p-4">
+              <div className="bg-zinc-900 border border-white/10 rounded-2xl p-5 max-w-md w-full">
+                <div className="flex justify-between items-center mb-3">
                   <h2 className="text-lg font-semibold">Quick Controls</h2>
-                  <button
-                    onClick={() => setShowGuide(false)}
-                    className="text-gray-400 hover:text-white"
-                  >
+                  <button onClick={() => setShowGuide(false)} className="text-gray-400 hover:text-white">
                     ✕
                   </button>
                 </div>
 
-                <div className="space-y-3 text-sm text-gray-300">
+                <div className="space-y-2 text-sm text-gray-300">
                   <p>
                     🖱️ <b>Left drag</b> — rotate
                   </p>
                   <p>
-                    🌀 <b>Scroll</b> — zoom
+                    🌀 <b>Scroll / pinch</b> — zoom
                   </p>
                   <p>
-                    🧭 <b>Right drag</b> — pan
+                    🧭 <b>Right drag / two-finger drag</b> — pan
                   </p>
 
                   <div className="mt-3 p-3 rounded-lg bg-white/5 border border-white/10">
                     Tip: If you get lost, press <b>Reset View</b>.
                   </div>
-
-                  <div className="mt-2 text-xs text-gray-500">
-                    Part 2 starts loading after Part 1 finishes.
-                  </div>
                 </div>
 
-                <div className="mt-5 text-right">
+                <div className="mt-4 text-right">
                   <button
                     onClick={() => setShowGuide(false)}
                     className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg"
@@ -193,7 +199,7 @@ export default function App() {
         </main>
       </div>
 
-      {/* FOOTER */}
+      {/* footer: make it small so it doesn't steal mobile height */}
       <footer className="footer bg-dark text-light py-3 text-center">
         <p className="small weight-300 text-gray-500">
           📧 Email: <a href="mailto:sakiiichu@gmail.com">sakiichu@gmail.com</a>{" "}
