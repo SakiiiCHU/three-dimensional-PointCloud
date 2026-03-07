@@ -39,12 +39,16 @@ A live demo is available via **GitHub Pages**.
 
 ## Project Structure
 
+## Project Structure
+
+```text
 three-dimensional-PointCloud
-├── public/ # point cloud assets and static files
-├── src/ # viewer logic and components
-├── index.html # entry page
+├── public/        # point cloud assets and static files
+├── src/           # viewer logic and components
+├── index.html     # entry page
 ├── vite.config.js
 └── package.json
+```
 
 
 ---
